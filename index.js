@@ -173,8 +173,11 @@ function SelectedParty() {
     <address>${selectedParty.location}</address>
     <p>${selectedParty.description}</p>
     <GuestList></GuestList>
+    <button>Delete party</button>
   `;
   $party.querySelector("GuestList").replaceWith(GuestList());
+  const $delete = $party.querySelector("button");
+  $delete.addEventListener("click", () => deleteParty(party.id));
 
   return $party;
 }
