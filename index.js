@@ -74,11 +74,15 @@ function NewPartyForm() {
       <input name="description" required />
     </label>
     <label>
-      Image URL
-      <input name="imageUrl" required />
+    Date
+    <input name="date" type="date" required />
+    </label>
+    <label>
+    Location
+    <input name="location" required />
     </label>
     <button>
-      Add new recipe
+      Add Party
     </button>
   `;
   $form.addEventListener("submit", (event) => {
@@ -211,11 +215,15 @@ function render() {
         <h2>Party Details</h2>
         <SelectedParty></SelectedParty>
       </section>
+      <section>
+      <NewPartyForm></NewPartyForm>
+      </section.
     </main>
   `;
 
   $app.querySelector("PartyList").replaceWith(PartyList());
   $app.querySelector("SelectedParty").replaceWith(SelectedParty());
+  $app.querySelector("NewPartyForm").appendChild(NewPartyForm());
 }
 
 async function init() {
