@@ -37,7 +37,7 @@ async function addParty(party) {
   try {
     // `fetch` requires some extra information to make non-GET requests
     // TODO
-    await fetch(API, {
+    await fetch(API + "/events", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(party),
@@ -53,7 +53,7 @@ async function deleteParty(id) {
     // The ID of the recipe to delete is sent via the URL, not the body!
     // DELETE requests don't have a body.
     // TODO
-    await fetch(`${API}/${id}`, {
+    await fetch(`${API}/events/${id}`, {
       method: "DELETE",
     });
     await getParties();
@@ -88,6 +88,7 @@ function NewPartyForm() {
   $form.addEventListener("submit", (event) => {
     event.preventDefault();
     const data = new FormData($form);
+    const isoDate = new Date(data.get("date")).toISOString();
     console.log(data);
     console.log(data.get("name"));
     console.log(data.get("description"));
@@ -96,7 +97,7 @@ function NewPartyForm() {
     addParty({
       name: data.get("name"),
       description: data.get("description"),
-      date: data.get("date"),
+      date: isoDate,
       location: data.get("location"),
     });
   });
@@ -177,7 +178,7 @@ function SelectedParty() {
   `;
   $party.querySelector("GuestList").replaceWith(GuestList());
   const $delete = $party.querySelector("button");
-  $delete.addEventListener("click", () => deleteParty(party.id));
+  $delete.addEventListener("click", () => deleteParty(selectedParty.id));
 
   return $party;
 }
