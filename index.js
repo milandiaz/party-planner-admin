@@ -1,6 +1,6 @@
 // === Constants ===
 const BASE = "https://fsa-crud-2aa9294fe819.herokuapp.com/api";
-const COHORT = ""; // Make sure to change this!
+const COHORT = "/2506-Milan"; // Make sure to change this!
 const API = BASE + COHORT;
 
 // === State ===
@@ -31,6 +31,73 @@ async function getParty(id) {
   } catch (e) {
     console.error(e);
   }
+}
+
+async function addParty(party) {
+  try {
+    // `fetch` requires some extra information to make non-GET requests
+    // TODO
+    await fetch(API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(party),
+    });
+    await getParties();
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+async function deleteParty(id) {
+  try {
+    // The ID of the recipe to delete is sent via the URL, not the body!
+    // DELETE requests don't have a body.
+    // TODO
+    await fetch(`${API}/${id}`, {
+      method: "DELETE",
+    });
+    await getParties();
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+function NewPartyForm() {
+  const $form = document.createElement("form");
+  $form.innerHTML = `
+    <label>
+      Name
+      <input name="name" required />
+    </label>
+    <label>
+      Description
+      <input name="description" required />
+    </label>
+    <label>
+      Image URL
+      <input name="imageUrl" required />
+    </label>
+    <button>
+      Add new recipe
+    </button>
+  `;
+  $form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const data = new FormData($form);
+    console.log(data);
+    console.log(data.get("name"));
+    console.log(data.get("description"));
+
+    // TODO - call `addRecipe` on form submit
+    addParty({
+      name: data.get("name"),
+      description: data.get("description"),
+      date: data.get("date"),
+      location: data.get("location"),
+    });
+  });
+
+  return $form;
 }
 
 /** Updates state with all RSVPs from the API */
@@ -107,6 +174,8 @@ function SelectedParty() {
 
   return $party;
 }
+
+function addPartyContainer() {}
 
 /** List of guests attending the selected party */
 function GuestList() {
